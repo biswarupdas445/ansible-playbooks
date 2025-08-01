@@ -76,7 +76,7 @@ Or set up in ~/.ssh/config or inventory.ini.
 
 ```bash
 
-ansible-playbook -i inventory.ini check_resources.yml
+ansible-playbook -i inventory.ini check_resources.yml -K
 ```
 
 

@@ -1,0 +1,52 @@
+---
+- name: Gather System Resource Info
+  hosts: ec2
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: ' [1.] Display OS info. '
+      ansible.builtin.debug:
+        var: ansible_distribution
+
+    - name: ' [2.] Display CPU info. '
+      ansible.builtin.command: lscpu
+      register: cpu_info
+
+    - name: ' [3.] Show CPU info. '
+      ansible.builtin.debug:
+        var: cpu_info.stdout_lines
+
+    - name: ' [4.] Display Memory info. '
+      ansible.builtin.command: free -h
+      register: memory_info
+
+    - name: ' [5.] Show Memory info. '
+      ansible.builtin.debug:
+        var: memory_info.stdout_lines
+
+    - name: ' [6.] Display Disk usage. '
+      ansible.builtin.command: df -h /
+      register: disk_info
+
+    - name: ' [7.] Show Disk info. '
+      ansible.builtin.debug:
+        var: disk_info.stdout_lines
+    
+    - name: ' [8.] Display NvME Disk Usage. '
+      ansible.builtin.shell:
+        cmd: "df -lh"
+      ignore_errors: yes
+      register: nvme_info
+      
+    - name: ' [9.] Show NvME Disk Info. '
+      debug:
+          var: nvme_info.stdout_lines
+
+    - name: ' [10.] Display system uptime. '
+      ansible.builtin.command: uptime
+      register: uptime_info
+
+    - name: ' [11.] Show Uptime info. '
+      ansible.builtin.debug:
+        var: uptime_info.stdout_lines
